@@ -16,7 +16,7 @@
                 <p class="card-text">website: {{item.website}}</p>
                 <p class="card-text">phone: {{item.phone}}</p>
                 <router-link :to="{ name: 'posts', params: {userId: item.id} }" class="btn btn-primary btn-mrg">Sidn User</router-link>
-                <button type="button" class="btn btn-danger" v-on:click="removeUser(item)">Delete</button>
+                <button type="button" class="btn btn-danger" v-on:click="removeListUsers(item)">Delete</button>
               </div>
             </div>
           </div>
@@ -28,26 +28,15 @@
 </template>
 
 <script>
-  import { UserService } from "@/common/api.service";
+
+  import {mapActions, mapGetters} from 'vuex';
 
   export default {
     name: "UserList",
-    data: function () {
-      return {
-        userList: []
-      };
-    },
-    created() {
-      UserService.query().then(({ data }) => {
-        return this.userList = data;
-      })
-    },
-    methods: {
-      removeUser: function (item) {
-         UserService.delete(item.id).then(() => {
-          return alert('Удаляется с игры ' + item.name);
-        })
-      }
+    computed: mapGetters(['userList']),
+    methods: mapActions(['getListUsers', 'removeListUsers']),
+    async mounted() {
+      this.getListUsers();
     }
   };
 </script>

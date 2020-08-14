@@ -82,6 +82,7 @@
 <script>
   import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
   import * as rules from 'vee-validate/dist/rules';
+  import {mapActions, mapGetters} from 'vuex';
 
   Object.keys(rules).forEach(rule => {
     extend(rule, rules[rule]);
@@ -94,7 +95,6 @@
     message: 'invalid phone format'
   });
 
-  import { UserService } from "@/common/api.service";
 
   export default {
     name: 'UserCreate',
@@ -113,12 +113,12 @@
         }
       }
     },
+    computed: mapGetters(['userList']),
     methods: {
-      onSubmit(evt) {
-        evt.preventDefault()
-        UserService.post(this.form).then(() => {
-          return console.log('success?!');
-        })
+      ...mapActions(['createUser']),
+      onSubmit() {
+        this.createUser(this.form);
+
       },
       onReset(evt) {
         evt.preventDefault()
