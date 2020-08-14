@@ -2,19 +2,19 @@ import { UserService } from "@/common/api.service";
 
 export default {
     actions: {
-        getListUsers(context) {
+        getListUsers({ commit }) {
             UserService.query().then(({ data }) => {
-                return context.commit('setListUsers', data);
+                return commit('setListUsers', data);
             })
         },
-        removeListUsers(context, item){
+        removeListUsers({ commit }, item){
             UserService.delete(item.id).then(() => {
-                return context.commit('deleteListUsers', item);
+                return commit('deleteListUsers', item);
             })
         },
-        createUser(context, item) {
+        createUser({ commit }, item) {
             UserService.post(item).then(() => {
-                return context.commit('createNewUser', item);
+                return commit('createNewUser', item);
               })
         }
     },
