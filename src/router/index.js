@@ -1,5 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
+import store from '../store'
+
+const ifAuth = (to, from, next) => {
+  if (store.getters.token) {
+    next()
+    return
+  }
+  next('/sign-in')
+}
 
 Vue.use(Router);
 
@@ -9,7 +18,8 @@ export default new Router({
     {
       name: 'userList',
       path: "/",
-      component: () => import("@/views/UserList")
+      component: () => import("@/views/UserList"),
+      beforeEnter: ifAuth
     },
     {
       name: "user",
@@ -38,6 +48,11 @@ export default new Router({
       name: "post",
       path: "/post",
       component: () => import("@/views/User")
+    },
+    {
+      name: "signIn",
+      path: "/sign-in",
+      component: () => import("@/views/Authorization")
     }
   ]
 });
